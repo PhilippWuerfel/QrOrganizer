@@ -68,7 +68,7 @@ class LendingFormFragment : Fragment() {
 
         } else {
             // ToDo implement depending on status of check box two functions for lendArticle (with and without return date)
-            viewModel.onLendArticle()
+            viewModel.onLendArticle(requireView())
         }
     }
 }

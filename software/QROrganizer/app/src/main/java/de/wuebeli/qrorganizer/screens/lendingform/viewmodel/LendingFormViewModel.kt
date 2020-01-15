@@ -1,11 +1,14 @@
 package de.wuebeli.qrorganizer.screens.lendingform.viewmodel
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
 import de.wuebeli.qrorganizer.model.ArticleLending
 import de.wuebeli.qrorganizer.model.ArticleMaster
 import de.wuebeli.qrorganizer.model.ArticleStorageLocation
+import de.wuebeli.qrorganizer.screens.lendingform.view.LendingFormFragmentDirections
 import de.wuebeli.qrorganizer.util.MongoDBStitchManager
 import java.util.*
 
@@ -19,7 +22,7 @@ class LendingFormViewModel : ViewModel() {
     val lending_return_date = MutableLiveData<String>() // due to two way binding works better on string, will be converted before creation of ArticleLending-Object
 //    var lending_is_wear_part = MutableLiveData<Int>()
 
-    fun onLendArticle(){
+    fun onLendArticle(view : View){
 
         /** ToDo
          *   1. Get ArticleID from Scanning QR Code or from Selection in List
@@ -39,6 +42,9 @@ class LendingFormViewModel : ViewModel() {
         )
 
         MongoDBStitchManager.lendArticle(articleId.value!!.toString(), myLending)
+
+        val action = LendingFormFragmentDirections.actionLendingFormFragmentToStartFragment()
+        Navigation.findNavController(view).navigate(action)
 
     }
 }
