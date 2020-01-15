@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="de.wuebeli.qrorganizer.screens.start.StartFragment"
+        android:label="fragment_start"
+        tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/action_startFragment_to_datasetFragment"
+            app:destination="@id/datasetFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_qrCreateFragment"
+            app:destination="@id/qrCreateFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_lendingSelectionFragment"
+            app:destination="@id/lendingSelectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/datasetFragment"
+        android:name="de.wuebeli.qrorganizer.screens.dataset.view.DatasetFragment"
+        android:label="fragment_dataset"
+        tools:layout="@layout/fragment_dataset" >
+        <action
+            android:id="@+id/action_datasetFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+        <action
+            android:id="@+id/action_datasetFragment_to_lendArticleOverviewFragment"
+            app:destination="@id/lendArticleOverviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/qrCreateFragment"
+        android:name="de.wuebeli.qrorganizer.screens.qrcreate.QrCreateFragment"
+        android:label="QrCreateFragment" >
+        <action
+            android:id="@+id/action_qrCreateFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/qrScanFragment"
+        android:name="de.wuebeli.qrorganizer.screens.qrscan.QrScanFragment"
+        android:label="QrScanFragment" />
+    <fragment
+        android:id="@+id/lendArticleOverviewFragment"
+        android:name="de.wuebeli.qrorganizer.screens.lendarticleoverview.view.LendArticleOverviewFragment"
+        android:label="LendArticleOverviewFragment" >
+        <argument
+            android:name="articleId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_lendArticleOverviewFragment_to_datasetFragment"
+            app:destination="@id/datasetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/lendingSelectionFragment"
+        android:name="de.wuebeli.qrorganizer.screens.lending.view.LendingSelectionFragment"
+        android:label="LendingSelectionFragment" >
+        <action
+            android:id="@+id/action_lendingSelectionFragment_to_qrScanFragment"
+            app:destination="@id/qrScanFragment" />
+        <action
+            android:id="@+id/action_lendingSelectionFragment_to_lendingFormFragment"
+            app:destination="@id/lendingFormFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/lendingFormFragment"
+        android:name="de.wuebeli.qrorganizer.screens.lendingform.view.LendingFormFragment"
+        android:label="LendingFormFragment" >
+        <argument
+            android:name="articleId"
+            app:argType="string" />
+    </fragment>
+</navigation>

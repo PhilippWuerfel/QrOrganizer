@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">QR Organizer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_app_id">fabstitchapp-ekpvh</string>
+    <string name="msg_error_list_download">An error occurred while loading data</string>
+    <!--    Formats for item_article-->
+    <string name="current_amount_format">Current stock amount: %d</string>
+    <string name="lending_amount_format">Current lending amount: %d</string>
+    <string name="text_finish">Finish</string>
+    <string name="text_no_data_available">Currently no data available</string>
+</resources>

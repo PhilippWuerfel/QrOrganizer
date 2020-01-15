@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="qrCreateViewModel"
+            type="de.wuebeli.qrorganizer.screens.qrcreate.QrCreateViewModel" />
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:context=".screens.qrcreate.QrCreateFragment">
+
+            <EditText
+                android:id="@+id/editText_Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Name"
+                android:inputType="textPersonName"
+                android:text="@={qrCreateViewModel.articleName}"/>
+
+            <EditText
+                android:id="@+id/editText_Price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Price"
+                android:inputType="numberDecimal"
+                android:text="@={qrCreateViewModel.articlePrice}"
+                />
+
+            <EditText
+                android:id="@+id/editText_Room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Room"
+                android:inputType="textPersonName"
+                android:text="@={qrCreateViewModel.articleRoom}"
+                 />
+
+            <EditText
+                android:id="@+id/editText_Shelf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Shelf"
+                android:inputType="textPersonName"
+                android:text="@={qrCreateViewModel.articleShelf}"
+                />
+
+
+            <EditText
+                android:id="@+id/editText_Box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Box"
+                android:inputType="textPersonName"
+                android:text="@={qrCreateViewModel.articleBox}"/>
+
+            <EditText
+                android:id="@+id/editText_Shop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Shop"
+                android:inputType="textPersonName"
+                android:text="@={qrCreateViewModel.shop}"/>
+
+            <EditText
+                android:id="@+id/editText_CurrentStockAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Current Amount"
+                android:inputType="number"
+                android:text="@={qrCreateViewModel.currentAmount}"/>
+
+            <EditText
+                android:id="@+id/editText_MinAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Minimum Amount"
+                android:inputType="number"
+                android:text="@={qrCreateViewModel.minAmount}"/>
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_qr"
+            android:layout_width="238dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintVertical_bias="0.284"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <Button
+            android:id="@+id/button_create"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="76dp"
+            android:gravity="clip_horizontal"
+            android:text="Create Article"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_qr" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+

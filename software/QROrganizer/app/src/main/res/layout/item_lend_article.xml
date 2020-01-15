@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="lendArticle"
+            type="de.wuebeli.qrorganizer.model.LendArticle" />
+
+        <variable
+            name="listener"
+            type="de.wuebeli.qrorganizer.screens.lendarticleoverview.view.LendArticleClickListener" />
+
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:orientation="horizontal"
+        android:onClick="@{listener::onLendArticleClicked}">
+
+        <TextView
+            android:id="@+id/text_lend_article_name"
+            style="@style/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{lendArticle.article_name}"/>
+
+        <TextView
+            android:id="@+id/text_lend_article_id"
+            style="@style/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@{lendArticle.article_id}"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/text_lend_lending_amount"
+                style="@style/Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(lendArticle.article_lending.lending_amount)}" />
+
+            <TextView
+                android:id="@+id/text_lend_lending_who"
+                style="@style/Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{lendArticle.article_lending.lending_who}" />
+
+            <TextView
+                android:id="@+id/text_lend_lending_return_date"
+                style="@style/Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(lendArticle.article_lending.lending_return_date.date)}" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</layout>
+
