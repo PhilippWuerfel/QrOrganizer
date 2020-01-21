@@ -1,26 +1,34 @@
 package de.wuebeli.qrorganizer.screens.lending.view
 
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
+import com.google.zxing.integration.android.IntentIntegrator
 
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.FragmentLendingSelectionBinding
 import de.wuebeli.qrorganizer.screens.lending.viewmodel.LendingSelectionViewModel
+import kotlinx.android.synthetic.main.fragment_qr_scan.*
 
 class LendingSelectionFragment : Fragment() {
 
     private lateinit var selectionViewModel : LendingSelectionViewModel
 
     private  lateinit var  dataBinding: FragmentLendingSelectionBinding
+
+    private lateinit var scanner: IntentIntegrator
 
     private val articleListAdapter =
         ArticleListLendingAdapter(
@@ -100,8 +108,24 @@ class LendingSelectionFragment : Fragment() {
     }
 
     private fun onQrScanClicked(){
-        val action = LendingSelectionFragmentDirections
-            .actionLendingSelectionFragmentToQrScanFragment()
-        NavHostFragment.findNavController(this).navigate(action)
+        scanner = IntentIntegrator.forSupportFragment(this)
+        scanner.initiateScan()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
+            val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+            if (result != null) {
+                if (result.contents == null) {
+                    Toast.makeText(getActivity()?.baseContext, "Cancelled", Toast.LENGTH_LONG).show()
+                } else {
+                    // ToDo check if articleId exists
+                    val action = LendingSelectionFragmentDirections.actionLendingSelectionFragmentToLendingFormFragment(result.contents)
+                    Navigation.findNavController(this.requireView()).navigate(action)
+                }
+            } else {
+                super.onActivityResult(requestCode, resultCode, data)
+            }
+        }
     }
 }

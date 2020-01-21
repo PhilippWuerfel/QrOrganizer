@@ -1,19 +1,25 @@
 package de.wuebeli.qrorganizer.screens.dataset.view
 
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
+import com.google.zxing.integration.android.IntentIntegrator
 
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.FragmentDatasetBinding
 import de.wuebeli.qrorganizer.screens.dataset.viewmodel.DatasetViewModel
+import de.wuebeli.qrorganizer.screens.lending.view.LendingSelectionFragmentDirections
 
 /** ToDo
  *   1) Aktuelle Artikelliste
@@ -27,6 +33,8 @@ class DatasetFragment : Fragment() {
     private lateinit var viewModel: DatasetViewModel
 
     private lateinit var dataBinding: FragmentDatasetBinding
+
+    private lateinit var scanner: IntentIntegrator
 
     private val articleListAdapter =
         ArticleListDatasetAdapter(
@@ -70,6 +78,8 @@ class DatasetFragment : Fragment() {
             dataBinding.refreshLayoutDataset.isRefreshing = false
         }
 
+        dataBinding.floatingActionButtonQrScan.setOnClickListener { onQrScanClicked() }
+
         observeViewModel()
     }
 
@@ -101,13 +111,29 @@ class DatasetFragment : Fragment() {
                 }
             }
         })
+    }
 
-        // test observing clicks
-//        viewModel.articelItemClicked.observe(this, Observer { onClick ->
-//            onClick?.let {
-//                dataBinding.
-//            }
-//        })
+    private fun onQrScanClicked(){
+        scanner = IntentIntegrator.forSupportFragment(this)
+        scanner.initiateScan()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
+            val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+            if (result != null) {
+                if (result.contents == null) {
+                    Toast.makeText(getActivity()?.baseContext, "Cancelled", Toast.LENGTH_LONG).show()
+                } else {
+                    // ToDo check if articleId exists
+                    val action = DatasetFragmentDirections.actionDatasetFragmentToLendArticleOverviewFragment(result.contents)
+                    //action.articleId = articleId
+                    Navigation.findNavController(this.requireView()).navigate(action)
+                }
+            } else {
+                super.onActivityResult(requestCode, resultCode, data)
+            }
+        }
     }
 
 }

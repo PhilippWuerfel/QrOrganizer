@@ -1,20 +1,20 @@
 package de.wuebeli.qrorganizer.screens.qrcreate
 
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.FragmentQrCreateBinding
-import kotlinx.android.synthetic.main.fragment_qr_create.*
+import de.wuebeli.qrorganizer.screens.MainActivity
+import de.wuebeli.qrorganizer.util.textToImageEncode
 
 /**
  * A simple [Fragment] subclass.
@@ -23,6 +23,7 @@ class QrCreateFragment : Fragment() {
 
     private lateinit var viewModel: QrCreateViewModel
     private lateinit var dataBinding: FragmentQrCreateBinding
+    private var storageAccessStarted=false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,22 +48,10 @@ class QrCreateFragment : Fragment() {
         dataBinding.buttonCreate.setOnClickListener(){onCreateArticleQR()}
 
 
+
         // Inflate the layout for this fragment
 //        return inflater.inflate(R.layout.fragment_qr_create, container, false)
         return dataBinding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-      //  viewModel.onCreateArticle()
-
-        // Observe articlePriceMaintainer to update double value on articlePrice
-//        viewModel.articlePriceMaintainer.observe(this, Observer { newArticlePrice ->
-//            newArticlePrice?.let{
-//                Log.d("TEST BEFORE:", "articlePrice = " + viewModel.articlePrice.value.toString())
-//                viewModel.articlePrice.value = newArticlePrice.toDoubleOrNull()
-//                Log.d("TEST AFTER:", "articlePrice = " + viewModel.articlePrice.value.toString())
-//            }
-//        })
     }
 
     private fun onCreateArticleQR() {
@@ -80,10 +69,25 @@ class QrCreateFragment : Fragment() {
             Toast.makeText(getActivity()?.baseContext, "Please fill out all fields", Toast.LENGTH_SHORT).show()
 
         } else {
-
-            viewModel.onCreateArticleQR(requireContext())
-
+            viewModel.onCreateArticleQR(requireContext(), requireView())
         }
+    }
+
+    fun onGrantPermission(){
+        storageAccessStarted=true
+        (activity as MainActivity).checkStoragePermission()
+    }
+
+
+    fun onPermissionResult(permissionGranted:Boolean){
+
+    }
+
+    fun onShare(){
+        val intent= Intent(Intent.ACTION_SEND)
+        intent.type="text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT,"Blablabla")
+        startActivity(intent)
     }
 
 

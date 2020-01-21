@@ -1,38 +1,32 @@
 package de.wuebeli.qrorganizer.screens.qrcreate
 
+import android.app.Application
 import android.content.Context
-import android.content.ContextWrapper
 import android.graphics.Bitmap
-import android.graphics.Color
-import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Environment
-import android.widget.EditText
-import android.widget.ImageView
+import android.view.View
 import android.widget.Toast
-import androidx.databinding.BaseObservable
-import androidx.databinding.Bindable
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
+import androidx.navigation.Navigation
 import com.google.zxing.WriterException
-import com.google.zxing.common.BitMatrix
-import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.model.ArticleMaster
 import de.wuebeli.qrorganizer.model.ArticleStorageLocation
+import de.wuebeli.qrorganizer.screens.BaseViewModel
 import de.wuebeli.qrorganizer.util.MongoDBStitchManager
-import kotlinx.android.synthetic.main.fragment_qr_create.*
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
+import de.wuebeli.qrorganizer.util.UploadCallback
+import de.wuebeli.qrorganizer.util.textToImageEncode
+import kotlinx.coroutines.launch
+import java.io.*
+import java.lang.Exception
 import java.util.*
 
-class QrCreateViewModel : ViewModel() {
+class QrCreateViewModel(application: Application) : BaseViewModel(application) {
 
     // to implement two way data binding on edit text, type needs to be string
+    val articleId = MutableLiveData<String>()
+
     val articleName = MutableLiveData<String>()
     val articlePrice = MutableLiveData<String>()
 //    val articlePrice = MutableLiveData<Double>()
@@ -44,10 +38,8 @@ class QrCreateViewModel : ViewModel() {
     val currentAmount = MutableLiveData<String>()
     val minAmount = MutableLiveData<String>()
 
-    //val imageView = MutableLiveData<ImageView>()
-
-
     init {
+        articleId.value = ""
         articleName.value = ""
         articlePrice.value = ""
         articleRoom.value = ""
@@ -58,35 +50,14 @@ class QrCreateViewModel : ViewModel() {
         minAmount.value = ""
     }
 
-    fun onCreateArticle() {
-        // before create: check values and convert types
-
-        // create data for document insertion
-        val myArticle = ArticleMaster(
-            "Sensor_" + System.currentTimeMillis().toString(),
-            "TestArticle",
-            "",
-            Calendar.getInstance().time,
-            articlePrice.value!!.toDouble(),
-            ArticleStorageLocation("F01", "7", "328"), //ToDo create class for storage location
-            20,
-            5,
-            0,
-            "Amazon"
-        )
-
-        MongoDBStitchManager.createArticle(myArticle)
-    }
-
-
-    fun onCreateArticleQR(context: Context?) {
-        //val articleId = articleName.value + "_" + System.currentTimeMillis().toString()
+    fun onCreateArticleQR(context: Context?, view : View) {
+        articleId.value = articleName.value + "_" + System.currentTimeMillis().toString()
         try {
-            val bitmap = TextToImageEncode(articleName.value+"_"+System.currentTimeMillis().toString())
+            val bitmap = textToImageEncode(articleId.value.toString())
 
             //R.id.iv_qr!!.setImageBitmap(bitmap) // ToDo add this when adapter is working
-            val path=onSaveImage(bitmap,context)  //permission handling for use of external storage
-            Toast.makeText(context,"Image saved in ->$path ",Toast.LENGTH_SHORT).show()
+            onSaveImage(bitmap,context)  //permission handling for use of external storage
+            //Toast.makeText(context,"Image saved in ->$path ",Toast.LENGTH_SHORT).show()
 
         } catch (e: WriterException) {
             e.printStackTrace()
@@ -96,7 +67,7 @@ class QrCreateViewModel : ViewModel() {
         //  for id: delete empty spaces
 
         val newArticle = ArticleMaster(
-            articleName.value!!.toString() + "_" + System.currentTimeMillis().toString(),
+            articleId.value!!.toString(),
             articleName.value!!.toString(),
             "", // can be empty, will be added from MongoDBStitchManager
             Calendar.getInstance().time,
@@ -108,81 +79,60 @@ class QrCreateViewModel : ViewModel() {
             shop.value!!.toString()
         )
 
-        MongoDBStitchManager.createArticle(newArticle)
+        /*
 
-    }
-
-    private fun onSaveImage(myBitmap: Bitmap?,context: Context?): String {
-        val bytes = ByteArrayOutputStream()
-        myBitmap!!.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
-        val wallpaperDirectory = File(
-            Environment.getExternalStorageDirectory().toString() + "/ArticlesQRCode"
-        )
-
-        // have the object build the directory structure, if needed.
-
-        if (!wallpaperDirectory.exists()) {
-            //Log.d("dirrrrrr", "" + wallpaperDirectory.mkdirs())
-            wallpaperDirectory.mkdirs()
-        }
-
-        try {
-
-            val f = File(
-                wallpaperDirectory, articleName.value+Calendar.getInstance()
-                    .timeInMillis.toString() + ".jpg"
-            )
-            f.createNewFile()
-            val fo = FileOutputStream(f)
-            //Display to Gallery,
-            MediaScannerConnection.scanFile( context,
-                arrayOf(f.path),
-                arrayOf("image/jpeg"), null)
-            fo.close()
-
-            return f.absolutePath
-        } catch (e1: IOException) {
-            e1.printStackTrace()
-        }
-
-        return ""
-    }
-
-    private fun TextToImageEncode(Value: String): Bitmap? {
-        val bitMatrix: BitMatrix
-        try {
-            bitMatrix = MultiFormatWriter().encode(
-                Value,
-                BarcodeFormat.QR_CODE,
-                500, 500, null
-            )
-
-        } catch (Illegalargumentexception: IllegalArgumentException) {
-
-            return null
-        }
-
-        val bitMatrixWidth = bitMatrix.getWidth()
-
-        val bitMatrixHeight = bitMatrix.getHeight()
-
-        val pixels = IntArray(bitMatrixWidth * bitMatrixHeight)
-
-        for (y in 0 until bitMatrixHeight) {
-            val offset = y * bitMatrixWidth
-
-            for (x in 0 until bitMatrixWidth) {
-
-                pixels[offset + x] = if (bitMatrix.get(x, y))
-                    Color.BLACK
-                else
-                    Color.WHITE
+        launch {
+                MongoDBStitchManager.lendArticle(articleId.value!!.toString(), myLending, object : UploadCallback.UploadCallbackInterface{
+                    override fun onError() {
+                        Toast.makeText(view.context,"Upload failed, check form and try again", Toast.LENGTH_SHORT).show()
+                    }
+                    override fun onFinish() {
+                        val action = LendingFormFragmentDirections.actionLendingFormFragmentToStartFragment()
+                        Navigation.findNavController(view).navigate(action)
+                    }
+                })
             }
-        }
-        val bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444)
 
-        bitmap.setPixels(pixels, 0, 500, 0, 0, bitMatrixWidth, bitMatrixHeight)
-        return bitmap
+
+         */
+        // launch coroutine from background thread to create new article in MongoDB
+        launch {
+            MongoDBStitchManager.createArticle(newArticle, object : UploadCallback.UploadCallbackInterface{
+                override fun onError() {
+                    Toast.makeText(context,"Upload failed",Toast.LENGTH_SHORT).show()
+                }
+                override fun onFinish() {
+                    val action = QrCreateFragmentDirections.actionQrCreateFragmentToStartFragment()
+                    Navigation.findNavController(view).navigate(action)
+                }
+            })
+        }
+    }
+
+    private fun onSaveImage(myBitmap: Bitmap?,context: Context?){
+        val externalStorageState=Environment.getExternalStorageState()
+        if (externalStorageState.equals(Environment.MEDIA_MOUNTED)){
+            val storageDirectory=Environment.getExternalStorageDirectory()
+            val dir=File(storageDirectory.absolutePath+"/Article_TU_QRCode/")
+            dir.mkdir()
+
+            val file=File(dir,articleId.value!!.toString() + ".jpg")
+            try {
+                val stream:OutputStream=FileOutputStream(file)
+                myBitmap?.compress(Bitmap.CompressFormat.JPEG,90,stream)
+                stream.flush()
+                stream.close()
+                Toast.makeText(context,"IMAGE SAVED ${Uri.parse(file.absolutePath)}",Toast.LENGTH_SHORT).show()
+            }
+
+            catch (e:Exception){
+                e.printStackTrace()
+            }
+
+        }else{
+            Toast.makeText(context,"NOT SAVED",Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 

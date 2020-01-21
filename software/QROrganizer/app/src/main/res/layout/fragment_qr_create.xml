@@ -35,7 +35,7 @@
                 android:ems="10"
                 android:hint="Name"
                 android:inputType="textPersonName"
-                android:text="@={qrCreateViewModel.articleName}"/>
+                android:text="@={qrCreateViewModel.articleName}" />
 
             <EditText
                 android:id="@+id/editText_Price"
@@ -44,8 +44,7 @@
                 android:ems="10"
                 android:hint="Price"
                 android:inputType="numberDecimal"
-                android:text="@={qrCreateViewModel.articlePrice}"
-                />
+                android:text="@={qrCreateViewModel.articlePrice}" />
 
             <EditText
                 android:id="@+id/editText_Room"
@@ -54,8 +53,7 @@
                 android:ems="10"
                 android:hint="Room"
                 android:inputType="textPersonName"
-                android:text="@={qrCreateViewModel.articleRoom}"
-                 />
+                android:text="@={qrCreateViewModel.articleRoom}" />
 
             <EditText
                 android:id="@+id/editText_Shelf"
@@ -64,8 +62,7 @@
                 android:ems="10"
                 android:hint="Shelf"
                 android:inputType="textPersonName"
-                android:text="@={qrCreateViewModel.articleShelf}"
-                />
+                android:text="@={qrCreateViewModel.articleShelf}" />
 
 
             <EditText
@@ -75,7 +72,7 @@
                 android:ems="10"
                 android:hint="Box"
                 android:inputType="textPersonName"
-                android:text="@={qrCreateViewModel.articleBox}"/>
+                android:text="@={qrCreateViewModel.articleBox}" />
 
             <EditText
                 android:id="@+id/editText_Shop"
@@ -83,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Shop"
                 android:inputType="textPersonName"
-                android:text="@={qrCreateViewModel.shop}"/>
+                android:text="@={qrCreateViewModel.shop}" />
 
             <EditText
                 android:id="@+id/editText_CurrentStockAmount"
@@ -91,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Current Amount"
                 android:inputType="number"
-                android:text="@={qrCreateViewModel.currentAmount}"/>
+                android:text="@={qrCreateViewModel.currentAmount}" />
 
             <EditText
                 android:id="@+id/editText_MinAmount"
@@ -99,36 +96,23 @@
                 android:layout_height="wrap_content"
                 android:hint="Minimum Amount"
                 android:inputType="number"
-                android:text="@={qrCreateViewModel.minAmount}"/>
+                android:text="@={qrCreateViewModel.minAmount}" />
         </LinearLayout>
-
-
-        <ImageView
-            android:id="@+id/iv_qr"
-            android:layout_width="238dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-            app:layout_constraintVertical_bias="0.284"
-            app:srcCompat="@mipmap/ic_launcher" />
 
         <Button
             android:id="@+id/button_create"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="76dp"
+            android:layout_marginTop="@dimen/margin_wide"
+            android:layout_marginBottom="@dimen/margin_wide"
             android:gravity="clip_horizontal"
             android:text="Create Article"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_qr" />
-
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintVertical_bias="1.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

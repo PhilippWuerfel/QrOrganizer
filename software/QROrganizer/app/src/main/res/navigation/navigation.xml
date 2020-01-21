@@ -41,10 +41,6 @@
             app:destination="@id/startFragment" />
     </fragment>
     <fragment
-        android:id="@+id/qrScanFragment"
-        android:name="de.wuebeli.qrorganizer.screens.qrscan.QrScanFragment"
-        android:label="QrScanFragment" />
-    <fragment
         android:id="@+id/lendArticleOverviewFragment"
         android:name="de.wuebeli.qrorganizer.screens.lendarticleoverview.view.LendArticleOverviewFragment"
         android:label="LendArticleOverviewFragment" >
@@ -59,9 +55,6 @@
         android:id="@+id/lendingSelectionFragment"
         android:name="de.wuebeli.qrorganizer.screens.lending.view.LendingSelectionFragment"
         android:label="LendingSelectionFragment" >
-        <action
-            android:id="@+id/action_lendingSelectionFragment_to_qrScanFragment"
-            app:destination="@id/qrScanFragment" />
         <action
             android:id="@+id/action_lendingSelectionFragment_to_lendingFormFragment"
             app:destination="@id/lendingFormFragment" />

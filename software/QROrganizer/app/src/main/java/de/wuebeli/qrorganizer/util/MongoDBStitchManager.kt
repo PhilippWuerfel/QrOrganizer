@@ -73,7 +73,7 @@ object MongoDBStitchManager {
 //        }
 //    }
 
-    fun createArticle(article: ArticleMaster) {
+    fun createArticle(article: ArticleMaster, uploadCallback: UploadCallback.UploadCallbackInterface) {
         stitchAppClient.auth.loginWithCredential(AnonymousCredential()).addOnSuccessListener {
             Log.d("createArticle", "In Success")
 
@@ -107,7 +107,31 @@ object MongoDBStitchManager {
                 .addOnSuccessListener {
                     Log.d("STITCH", "Document successfully inserted")
                 }
+                .addOnFailureListener {
+                    // updateOne was not successful
+                    Log.e("STITCH", "Document query failed")
+                    uploadCallback.onError()
+                }
+                .addOnCanceledListener {
+                    // updateOne was not successful
+                    Log.e("STITCH", "Document query failed")
+                    uploadCallback.onError()
+                }
+                .addOnCompleteListener {
+                    Log.d("STITCH", "Document successfully inserted")
+                    uploadCallback.onFinish()
+                }
         }
+            .addOnFailureListener {
+                //  stitchAppClient.auth.loginWithCredential was not successful
+                Log.e("STITCH", "Login failed")
+                uploadCallback.onError()
+            }
+            .addOnCanceledListener {
+                //  stitchAppClient.auth.loginWithCredential was not successful
+                Log.e("STITCH", "Login failed")
+                uploadCallback.onError()
+            }
     }
 
     fun updateArticle(article: ArticleMaster) {
@@ -142,14 +166,19 @@ object MongoDBStitchManager {
         }
     }
 
-    fun lendArticle(articleId: String, lending: ArticleLending) {
+    fun lendArticle(
+        articleId: String,
+        lending: ArticleLending,
+        uploadCallback: UploadCallback.UploadCallbackInterface
+    ) {
 
         /**
-         * ToDo
-         *  Check if Article in Stock -> Give Feedback to user if not enough stock
-         *  On Update decrease ArticleStockAmount
          *
-         *  Add Listeners for error handling
+         * called when checkBox "wear part" ticked false
+         *
+         *  On Update:
+         *   decrease articleCurrentStockAmount (amount can get negative, user checks manually in dataset overview)
+         *   increase articleLendingAmount
          */
 
         stitchAppClient.auth.loginWithCredential(AnonymousCredential()).addOnSuccessListener {
@@ -167,16 +196,53 @@ object MongoDBStitchManager {
             lendingDoc["lending_who"] = lending.lending_who
             lendingDoc["lending_amount"] = lending.lending_amount
             lendingDoc["lending_return_date"] = lending.lending_return_date
+            lendingDoc["lending_is_wear_part"] = lending.lending_is_wear_part
 
+            // add Lending as subdocument in MongoDB
             updateDoc.append("\$push", Document().append("lending", lendingDoc))
+
+            // decrease article_current_stock_amount in MongoDB
+            // increase article_lending_amount in MongoDB
+            updateDoc.append(
+                "\$inc",
+                Document().append(
+                    "article_current_stock_amount",
+                    (-1) * lending.lending_amount
+                ).append("article_lending_amount", lending.lending_amount)
+            )
+
             // only add Lending if Article exists
             val options = RemoteUpdateOptions().upsert(false)
 
             remoteQrStorageCollection.updateOne(filterDoc, updateDoc, options)
                 .addOnSuccessListener {
+                    // Log.d("STITCH", "Document successfully inserted")
+                }
+                .addOnFailureListener {
+                    // updateOne was not successful
+                    Log.e("STITCH", "Document query failed")
+                    uploadCallback.onError()
+                }
+                .addOnCanceledListener {
+                    // updateOne was not successful
+                    Log.e("STITCH", "Document query failed")
+                    uploadCallback.onError()
+                }
+                .addOnCompleteListener {
                     Log.d("STITCH", "Document successfully inserted")
+                    uploadCallback.onFinish()
                 }
         }
+            .addOnFailureListener {
+                //  stitchAppClient.auth.loginWithCredential was not successful
+                Log.e("STITCH", "Login failed")
+                uploadCallback.onError()
+            }
+            .addOnCanceledListener {
+                //  stitchAppClient.auth.loginWithCredential was not successful
+                Log.e("STITCH", "Login failed")
+                uploadCallback.onError()
+            }
     }
 
     fun returnArticle(article: ArticleMaster, lending: ArticleLending) {
@@ -210,13 +276,90 @@ object MongoDBStitchManager {
 //        }
     }
 
-    fun takeArticleForever() {
-        // tbd
-        // check amount
-        // decrease amount via update
+    fun takeArticleForever(
+        articleId: String,
+        lending: ArticleLending,
+        uploadCallback: UploadCallback.UploadCallbackInterface
+    ) {
+
+        /**
+         *  called when checkBox "wear part" ticked true
+         *
+         *  On Update:
+         *   decrease articleCurrentStockAmount (amount can get negative, user checks manually in dataset overview)
+         *   increase articleLendingAmount
+         *
+         *   no return_date will be attached to lending_object
+         */
+
+        stitchAppClient.auth.loginWithCredential(AnonymousCredential()).addOnSuccessListener {
+
+            Log.d("takeArticleForever", "In Success")
+
+            // filterDoc represents the filter to detect the document on which will be updated/created
+            val filterDoc = Document()
+            filterDoc["article_id"] = articleId
+
+            // updateDoc contains ArticleLending items
+            val updateDoc = Document()
+            val lendingDoc = Document()
+            lendingDoc["lending_id"] = lending.lending_id
+            lendingDoc["lending_who"] = lending.lending_who
+            lendingDoc["lending_amount"] = lending.lending_amount
+            lendingDoc["lending_return_date"] = lending.lending_return_date
+            lendingDoc["lending_is_wear_part"] = lending.lending_is_wear_part
+
+            // add Lending as subdocument in MongoDB
+            updateDoc.append("\$push", Document().append("lending", lendingDoc))
+
+            // decrease article_current_stock_amount in MongoDB
+            updateDoc.append(
+                "\$inc",
+                Document().append(
+                    "article_current_stock_amount",
+                    (-1) * lending.lending_amount
+                ).append("article_lending_amount", lending.lending_amount)
+            )
+
+            // only add Lending if Article exists
+            val options = RemoteUpdateOptions().upsert(false)
+
+            remoteQrStorageCollection.updateOne(filterDoc, updateDoc, options)
+                .addOnSuccessListener {
+                    // Log.d("STITCH", "Document successfully inserted")
+                }
+
+                .addOnFailureListener {
+                    // updateOne was not successful
+                    Log.e("STITCH", "Document query failed")
+                    uploadCallback.onError()
+                }
+                .addOnCanceledListener {
+                    // updateOne was not successful
+                    Log.e("STITCH", "Document query failed")
+                    uploadCallback.onError()
+                }
+                .addOnCompleteListener {
+                    Log.d("STITCH", "Document successfully inserted")
+                    uploadCallback.onFinish()
+                }
+        }
+            .addOnFailureListener {
+                //  stitchAppClient.auth.loginWithCredential was not successful
+                Log.e("STITCH", "Login failed")
+                uploadCallback.onError()
+            }
+            .addOnCanceledListener {
+                //  stitchAppClient.auth.loginWithCredential was not successful
+                Log.e("STITCH", "Login failed")
+                uploadCallback.onError()
+            }
     }
 
-    fun downloadLendArticleList(articleId: String , downloadCallback: DownloadCallbackLendArticleList.DownloadCallbackInterface) {
+    fun downloadLendArticleList(
+        articleId: String,
+        downloadCallback: DownloadCallbackLendArticleList.DownloadCallbackInterface
+    ) {
 
         val lendArticleList = mutableListOf<LendArticle>()
 
@@ -252,7 +395,8 @@ object MongoDBStitchManager {
                                         it["lending_id"] as String,
                                         it["lending_who"] as String,
                                         it["lending_amount"] as Int,
-                                        it["lending_return_date"] as Date
+                                        it["lending_return_date"] as Date,
+                                        it["lending_is_wear_part"] as Boolean
                                     )
 
                                 lendArticleList.add(
@@ -281,11 +425,11 @@ object MongoDBStitchManager {
                         downloadCallback.onError()
                     }
                     .addOnCompleteListener {
-                        if(lendArticleList.isEmpty()){
+                        if (lendArticleList.isEmpty()) {
                             // query.into(result) was not successful
-                            Log.e("STITCH", "Document query resultet in emppty list")
+                            Log.e("STITCH", "Document query results in empty list")
                             downloadCallback.onError()
-                        }else{
+                        } else {
                             Log.d("STITCH", "Document successfully queried")
                             Log.d("Result ArrayList", lendArticleList.toString())
                             downloadCallback.onFinish(lendArticleList)
@@ -305,7 +449,7 @@ object MongoDBStitchManager {
 
     }
 
-    fun downloadArticleList(downloadCallback: DownloadCallbackArticleList.DownloadCallbackInterface){
+    fun downloadArticleList(downloadCallback: DownloadCallbackArticleList.DownloadCallbackInterface) {
         val articleList = mutableListOf<ArticleMaster>()
 
         stitchAppClient.auth.loginWithCredential(AnonymousCredential())
@@ -318,7 +462,7 @@ object MongoDBStitchManager {
                 val query = remoteQrStorageCollection.find(filterDBObj)
                 val result = mutableListOf<Document>()
                 query.into(result).addOnSuccessListener {
-                    var articleId : String
+                    var articleId: String
                     var articleName: String
                     var lastUserId: String
                     var lastChangeTime: Date
@@ -341,14 +485,15 @@ object MongoDBStitchManager {
                             articlePrice = it["article_price"] as Double
 
                             // article_storage_location contains multiple fields and will be received as Document
-                            if(it["article_storage_location"] != null){
-                                articleStorageLocationDoc = it["article_storage_location"] as Document
+                            if (it["article_storage_location"] != null) {
+                                articleStorageLocationDoc =
+                                    it["article_storage_location"] as Document
                                 articleStorageLocation = ArticleStorageLocation(
                                     articleStorageLocationDoc["Room"] as String,
                                     articleStorageLocationDoc["Box"] as String,
                                     articleStorageLocationDoc["Shelf"] as String
                                 )
-                            }else{
+                            } else {
                                 articleStorageLocation = ArticleStorageLocation(
                                     "NA",
                                     "NA",
@@ -394,11 +539,11 @@ object MongoDBStitchManager {
                         downloadCallback.onError()
                     }
                     .addOnCompleteListener {
-                        if(articleList.isEmpty()){
+                        if (articleList.isEmpty()) {
                             // query.into(result) was not successful
-                            Log.e("STITCH", "Document query resultet in emppty list")
+                            Log.e("STITCH", "Document query results in empty list")
                             downloadCallback.onError()
-                        }else{
+                        } else {
                             Log.d("STITCH", "Document successfully queried")
                             Log.d("Result ArrayList", articleList.toString())
                             downloadCallback.onFinish(articleList)

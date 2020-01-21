@@ -1,18 +1,20 @@
 package de.wuebeli.qrorganizer.screens.lendingform.viewmodel
 
+import android.app.Application
 import android.view.View
-import androidx.lifecycle.LiveData
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import de.wuebeli.qrorganizer.model.ArticleLending
-import de.wuebeli.qrorganizer.model.ArticleMaster
-import de.wuebeli.qrorganizer.model.ArticleStorageLocation
+import de.wuebeli.qrorganizer.screens.BaseViewModel
 import de.wuebeli.qrorganizer.screens.lendingform.view.LendingFormFragmentDirections
 import de.wuebeli.qrorganizer.util.MongoDBStitchManager
+import de.wuebeli.qrorganizer.util.UploadCallback
+import kotlinx.android.synthetic.main.fragment_lending_form.view.*
+import kotlinx.coroutines.launch
 import java.util.*
 
-class LendingFormViewModel : ViewModel() {
+class LendingFormViewModel(application: Application) : BaseViewModel(application) {
 
     val articleId = MutableLiveData<String>()
 
@@ -38,13 +40,38 @@ class LendingFormViewModel : ViewModel() {
             System.currentTimeMillis().toString(),
             lending_who.value!!.toString(),
             lending_amount.value!!.toInt(),
-            returnDate
+            returnDate,
+            view.checkBox_IsWearPart.isChecked
         )
 
-        MongoDBStitchManager.lendArticle(articleId.value!!.toString(), myLending)
+        if(myLending.lending_is_wear_part){
+            // launch coroutine from background thread to upload LendingForm to MongoDB
+            launch {
+                MongoDBStitchManager.takeArticleForever(articleId.value!!.toString(), myLending, object : UploadCallback.UploadCallbackInterface{
+                    override fun onError() {
+                        Toast.makeText(view.context,"Upload failed, check form and try again", Toast.LENGTH_SHORT).show()
+                    }
+                    override fun onFinish() {
+                        val action = LendingFormFragmentDirections.actionLendingFormFragmentToStartFragment()
+                        Navigation.findNavController(view).navigate(action)
+                    }
+                })
+            }
+        }else{
+            // launch coroutine from background thread to upload LendingForm to MongoDB
+            launch {
+                MongoDBStitchManager.lendArticle(articleId.value!!.toString(), myLending, object : UploadCallback.UploadCallbackInterface{
+                    override fun onError() {
+                        Toast.makeText(view.context,"Upload failed, check form and try again", Toast.LENGTH_SHORT).show()
+                    }
+                    override fun onFinish() {
+                        val action = LendingFormFragmentDirections.actionLendingFormFragmentToStartFragment()
+                        Navigation.findNavController(view).navigate(action)
+                    }
+                })
+            }
 
-        val action = LendingFormFragmentDirections.actionLendingFormFragmentToStartFragment()
-        Navigation.findNavController(view).navigate(action)
+        }
 
     }
 }

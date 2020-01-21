@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.FragmentLendArticleOverviewBinding
 import de.wuebeli.qrorganizer.screens.lendarticleoverview.viewmodel.LendArticleOverviewViewModel
+import de.wuebeli.qrorganizer.util.textToImageEncode
 import kotlinx.android.synthetic.main.fragment_lend_article_overview.*
 
 /**
@@ -76,6 +77,7 @@ class LendArticleOverviewFragment : Fragment() {
 
         arguments?.let {
             articleId = LendArticleOverviewFragmentArgs.fromBundle(it).articleId
+            dataBinding.ivQr.setImageBitmap(textToImageEncode(articleId))
         }
 
         // load data the very first time view is created
