@@ -33,9 +33,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/text_name"
+                android:hint="@string/text_article_name"
                 android:inputType="textPersonName"
-                android:text="@={qrCreateViewModel.articleName}" />
+                android:text="@={qrCreateViewModel.articleName}"
+                android:maxLength="30"
+                />
 
             <EditText
                 android:id="@+id/editText_Price"
@@ -44,7 +46,9 @@
                 android:ems="10"
                 android:hint="@string/text_price"
                 android:inputType="numberDecimal"
-                android:text="@={qrCreateViewModel.articlePrice}" />
+                android:text="@={qrCreateViewModel.articlePrice}"
+                android:maxLength="9"
+                />
 
             <EditText
                 android:id="@+id/editText_Room"
@@ -53,7 +57,9 @@
                 android:ems="10"
                 android:hint="@string/text_room"
                 android:inputType="textPersonName"
-                android:text="@={qrCreateViewModel.articleRoom}" />
+                android:text="@={qrCreateViewModel.articleRoom}"
+                android:maxLength="30"
+                />
 
             <EditText
                 android:id="@+id/editText_Shelf"
@@ -62,7 +68,9 @@
                 android:ems="10"
                 android:hint="@string/text_shelf"
                 android:inputType="textPersonName"
-                android:text="@={qrCreateViewModel.articleShelf}" />
+                android:text="@={qrCreateViewModel.articleShelf}"
+                android:maxLength="30"
+                />
 
 
             <EditText
@@ -72,7 +80,9 @@
                 android:ems="10"
                 android:hint="@string/text_box"
                 android:inputType="textPersonName"
-                android:text="@={qrCreateViewModel.articleBox}" />
+                android:text="@={qrCreateViewModel.articleBox}"
+                android:maxLength="30"
+                />
 
             <EditText
                 android:id="@+id/editText_Shop"
@@ -80,7 +90,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/text_shop"
                 android:inputType="textPersonName"
-                android:text="@={qrCreateViewModel.shop}" />
+                android:text="@={qrCreateViewModel.shop}"
+                android:maxLength="30"
+                />
 
             <EditText
                 android:id="@+id/editText_CurrentStockAmount"
@@ -88,7 +100,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/text_current_amount"
                 android:inputType="number"
-                android:text="@={qrCreateViewModel.currentAmount}" />
+                android:text="@={qrCreateViewModel.currentAmount}"
+                android:maxLength="9"
+                />
 
             <EditText
                 android:id="@+id/editText_MinAmount"
@@ -96,7 +110,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/text_minimum_amount"
                 android:inputType="number"
-                android:text="@={qrCreateViewModel.minAmount}" />
+                android:text="@={qrCreateViewModel.minAmount}"
+                android:maxLength="9"
+                />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

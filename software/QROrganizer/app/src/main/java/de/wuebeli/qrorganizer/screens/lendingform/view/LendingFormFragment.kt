@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -14,6 +15,7 @@ import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.FragmentLendingFormBinding
 import de.wuebeli.qrorganizer.screens.lendingform.viewmodel.LendingFormViewModel
 import kotlinx.android.synthetic.main.fragment_lending_form.*
+import setOnSingleClickListener
 
 
 /**
@@ -38,6 +40,9 @@ class LendingFormFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        // Switch SoftInputMode to avoid appearing keyboard from destroying view layout
+        activity!!.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
         dataBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_lending_form,
@@ -51,7 +56,9 @@ class LendingFormFragment : Fragment() {
 
         dataBinding.lifecycleOwner = this
 
-        dataBinding.buttonLendingFinish.setOnClickListener { onFinishClicked() }
+        // protect from accident: fast unwanted clicks on button which could lead to crash of app
+        dataBinding.buttonLendingFinish
+            .setOnSingleClickListener(View.OnClickListener { onFinishClicked() })
 
         // set minDate of datePicker to forbid return dates in past
         dataBinding.datePickerLending.minDate= System.currentTimeMillis()-1000

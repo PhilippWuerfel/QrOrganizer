@@ -18,6 +18,7 @@ import de.wuebeli.qrorganizer.databinding.FragmentLendArticleOverviewBinding
 import de.wuebeli.qrorganizer.screens.lendarticleoverview.viewmodel.LendArticleOverviewViewModel
 import de.wuebeli.qrorganizer.util.onSaveImage
 import de.wuebeli.qrorganizer.util.textToImageEncode
+import setOnSingleClickListener
 
 /**
  *   1. Displays the QR Code Image of selected article
@@ -96,7 +97,9 @@ class LendArticleOverviewFragment : Fragment() {
             dataBinding.refreshLayoutReturn.isRefreshing = false
         }
 
-        dataBinding.floatingActionButtonFillUpStock.setOnClickListener { onFillUpStockClicked() }
+        // protect from accident: fast unwanted clicks on button which could lead to crash of app
+        dataBinding.floatingActionButtonFillUpStock
+            .setOnSingleClickListener(View.OnClickListener { onFillUpStockClicked() })
         dataBinding.ivQr.setOnLongClickListener { onQrImageLongClicked() }
 
         observeViewModel()

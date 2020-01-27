@@ -31,7 +31,8 @@
         android:layout_height="wrap_content"
         android:hint="@string/text_amount"
         android:inputType="numberSigned|number"
-        android:text="@={fillUpStockDialogFragmentViewModel.fillUpStockAmount}"/>
+        android:text="@={fillUpStockDialogFragmentViewModel.fillUpStockAmount}"
+        android:maxLength="9"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

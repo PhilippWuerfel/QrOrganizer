@@ -15,6 +15,7 @@ import androidx.navigation.navGraphViewModels
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.FragmentFillUpStockDialogBinding
 import de.wuebeli.qrorganizer.screens.lendarticleoverview.viewmodel.FillUpStockDialogFragmentViewModel
+import setOnSingleClickListener
 
 /**
  *   Opens a Dialog to return or remove articles form LendArticleList
@@ -53,11 +54,11 @@ class FillUpDialogFragment : DialogFragment() {
             viewModel.articleId.value = FillUpDialogFragmentArgs.fromBundle(it).articleId
         }
 
-        dataBinding.buttonFillUpConfirm.setOnClickListener { onFillUpConfirmed() }
+        dataBinding.buttonFillUpConfirm.setOnSingleClickListener(View.OnClickListener {
+            onFillUpConfirmed() })
     }
 
     private fun onFillUpConfirmed(){
-
         // check if fillUpStockAmount is entered correctly (handled here to prevent from navigation)
         if( viewModel.fillUpStockAmount.value.isNullOrEmpty()
             || viewModel.fillUpStockAmount.value.equals("-")){

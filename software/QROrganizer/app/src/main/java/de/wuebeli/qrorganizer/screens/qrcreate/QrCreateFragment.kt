@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.FragmentQrCreateBinding
 import de.wuebeli.qrorganizer.screens.MainActivity
+import setOnSingleClickListener
 
 /**
  *   1. Shows a form to create a new article (add new document on MongoDB)
@@ -39,6 +41,9 @@ class QrCreateFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        // Switch SoftInputMode to avoid appearing keyboard from destroying view layout
+        activity!!.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
         dataBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_qr_create,
@@ -54,7 +59,9 @@ class QrCreateFragment : Fragment() {
 
         dataBinding.executePendingBindings()
 
-        dataBinding.buttonCreate.setOnClickListener{onCreateArticleQR()}
+        // protect from accident: fast unwanted clicks on button which could lead to crash of app
+        dataBinding.buttonCreate
+            .setOnSingleClickListener( View.OnClickListener{onCreateArticleQR()})
 
         // Inflate the layout for this fragment
         return dataBinding.root
@@ -73,8 +80,8 @@ class QrCreateFragment : Fragment() {
             || dataBinding.editTextMinAmount.text.isNullOrEmpty()
         ) {
             Toast.makeText(getActivity()?.baseContext, "Please fill out all fields", Toast.LENGTH_SHORT).show()
-
         } else {
+            // ask for storage permission and if granted, call viewModel.onCreateArticleQR()
             storageAccessStarted=true
             (activity as MainActivity).checkStoragePermission()
         }

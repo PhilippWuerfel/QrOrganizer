@@ -27,8 +27,8 @@
     <string name="text_name_who">Name (who)</string>
     <string name="text_comments">Comments</string>
     <string name="text_wear_part">Wear Part</string>
-    <string name="text_name">Name</string>
-    <string name="text_price">Price</string>
+    <string name="text_article_name">Article Name</string>
+    <string name="text_price">Price per Unit</string>
     <string name="text_room">Room</string>
     <string name="text_shelf">Shelf</string>
     <string name="text_box">Box</string>

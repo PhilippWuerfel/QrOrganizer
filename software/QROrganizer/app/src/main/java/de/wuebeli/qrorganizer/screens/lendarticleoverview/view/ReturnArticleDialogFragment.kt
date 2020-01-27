@@ -14,6 +14,7 @@ import androidx.navigation.navGraphViewModels
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.FragmentReturnArticleDialogBinding
 import de.wuebeli.qrorganizer.screens.lendarticleoverview.viewmodel.ReturnArticleDialogFragmentViewModel
+import setOnSingleClickListener
 
 /**
  *   Opens a Dialog to fill up stock of selected article
@@ -62,7 +63,9 @@ class ReturnArticleDialogFragment : DialogFragment() {
             }
         }
 
-        dataBinding.buttonReturnArticleConfirm.setOnClickListener { onReturnConfirmed() }
+        // protect from accident: fast unwanted clicks on button which could lead to crash of app
+        dataBinding.buttonReturnArticleConfirm
+            .setOnSingleClickListener( View.OnClickListener { onReturnConfirmed() })
     }
 
     private fun onReturnConfirmed(){

@@ -28,6 +28,10 @@ class LendArticleOverviewViewModel(application: Application) : BaseViewModel(app
     val eventLoadingFinish : LiveData<Boolean>
         get() = _eventLoadingFinish
 
+    private val _articleName = MutableLiveData<String>()
+    val articleName : LiveData<String>
+        get() = _articleName
+
     fun refresh(articleId: String) {
         fetchLendArticlesFromDatabase(articleId)
     }
@@ -42,6 +46,7 @@ class LendArticleOverviewViewModel(application: Application) : BaseViewModel(app
                 override fun onError() {
                     _lendArticleListLoadError.value = true
                     _eventLoadingFinish.value = true
+                    _articleName.value = "Could not find lending in database"
                 }
 
                 override fun onFinish(lendArticleList: List<LendArticle>) {
@@ -56,6 +61,13 @@ class LendArticleOverviewViewModel(application: Application) : BaseViewModel(app
         _lendArticleList.value = lendArticles
         _lendArticleListLoadError.value = false
         _eventLoadingFinish.value = true
+
+        if (lendArticles.isNotEmpty()){
+            _articleName.value = lendArticles[0].article_name
+        }else{
+            _articleName.value = "Could not find any lending in database"
+        }
+
     }
 
     fun onQrImageLongClicked(context : Context) :  Boolean {
