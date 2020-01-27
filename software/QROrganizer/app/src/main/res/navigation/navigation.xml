@@ -50,6 +50,12 @@
         <action
             android:id="@+id/action_lendArticleOverviewFragment_to_datasetFragment"
             app:destination="@id/datasetFragment" />
+        <action
+            android:id="@+id/action_lendArticleOverviewFragment_to_fillUpDialogFragment"
+            app:destination="@id/fillUpDialogFragment" />
+        <action
+            android:id="@+id/action_lendArticleOverviewFragment_to_returnArticleDialogFragment"
+            app:destination="@id/returnArticleDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/lendingSelectionFragment"
@@ -68,6 +74,42 @@
             app:argType="string" />
         <action
             android:id="@+id/action_lendingFormFragment_to_startFragment"
-            app:destination="@id/startFragment" />
+            app:destination="@id/startFragment"
+            app:launchSingleTop="false"
+            app:popUpTo="@+id/navigation"
+            app:popUpToInclusive="true" />
     </fragment>
+    <dialog
+        android:id="@+id/fillUpDialogFragment"
+        android:name="de.wuebeli.qrorganizer.screens.lendarticleoverview.view.FillUpDialogFragment"
+        android:label="FillUpDialogFragment" >
+        <argument
+            android:name="articleId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_fillUpDialogFragment_to_datasetFragment"
+            app:destination="@id/datasetFragment"
+            app:popUpToInclusive="false" />
+    </dialog>
+    <dialog
+        android:id="@+id/returnArticleDialogFragment"
+        android:name="de.wuebeli.qrorganizer.screens.lendarticleoverview.view.ReturnArticleDialogFragment"
+        android:label="ReturnArticleDialogFragment" >
+        <argument
+            android:name="articleId"
+            app:argType="string" />
+        <argument
+            android:name="articleLendingId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_returnArticleDialogFragment_to_datasetFragment"
+            app:destination="@id/datasetFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="articleLendingAmount"
+            app:argType="integer" />
+        <argument
+            android:name="articleLendingIsWearPart"
+            app:argType="boolean" />
+    </dialog>
 </navigation>

@@ -3,24 +3,27 @@ package de.wuebeli.qrorganizer.screens.lending.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.ItemArticleBinding
 import de.wuebeli.qrorganizer.model.ArticleMaster
-import de.wuebeli.qrorganizer.screens.dataset.view.ArticleListDatasetAdapter
-import de.wuebeli.qrorganizer.screens.dataset.view.DatasetFragmentDirections
 import de.wuebeli.qrorganizer.util.ArticleClickListener
 import kotlinx.android.synthetic.main.item_article.view.*
+
+/**
+ *   Adapter to have ArticleList scrollable, items clickable
+ *   and efficient in LendSelectionFragment
+ */
+
 
 class ArticleListLendingAdapter(val articleList : ArrayList<ArticleMaster>) : RecyclerView.Adapter<ArticleListLendingAdapter.ArticleViewHolder>(),
     ArticleClickListener {
 
     fun updateArticleList(newArticleList: List<ArticleMaster>){
         articleList.clear()
-        articleList.addAll(newArticleList)
+        articleList.addAll(newArticleList.sortedBy { it.articleName })
         notifyDataSetChanged()
     }
 

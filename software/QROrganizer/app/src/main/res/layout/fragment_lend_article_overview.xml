@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="lendArticleOverviewViewModel"
+            type="de.wuebeli.qrorganizer.screens.lendarticleoverview.viewmodel.LendArticleOverviewViewModel"/>
+    </data>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayoutReturn"
         android:layout_width="match_parent"
@@ -17,22 +23,35 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/iv_qr"
+            <TextView
+                android:id="@+id/textView_articleId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                tools:text="articleId"
+                android:text="@{lendArticleOverviewViewModel.articleId}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/ic_launcher" />
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_qr"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:longClickable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView_articleId"
+                app:srcCompat="@mipmap/ic_launcher"
+                android:contentDescription="@string/text_qr_code_imageview"/>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/lendArticleList"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="@dimen/margin_wide"
-                app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_fillUpStock"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,13 +81,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/margin_wide"
-                android:layout_marginEnd="@dimen/margin_wide"
+                android:layout_marginTop="@dimen/margin_wide"
                 android:clickable="true"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:focusable="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.488"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/iv_qr"
+                app:layout_constraintTop_toTopOf="parent"
                 app:maxImageSize="@dimen/icon_image_size"
                 app:srcCompat="@drawable/ic_fill_up_stock" />
 

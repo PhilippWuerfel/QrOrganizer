@@ -18,16 +18,16 @@ import com.google.zxing.integration.android.IntentIntegrator
 
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.FragmentDatasetBinding
+import de.wuebeli.qrorganizer.screens.MainActivity
 import de.wuebeli.qrorganizer.screens.dataset.viewmodel.DatasetViewModel
-import de.wuebeli.qrorganizer.screens.lending.view.LendingSelectionFragmentDirections
+import de.wuebeli.qrorganizer.util.cameraAccessStarted
 
-/** ToDo
- *   1) Aktuelle Artikelliste
- *   2) Aktueller Bestand
- *   3) Lagerplatz
- *   4) Verliehenen Artikel (Wer, bis wann und Menge)
- *   5) Entnahme im Zeitraum x evtl. mit den verknüpften Kosten
+/**
+ *   Shows list of existing articles including details like amount and order destination
+ *   Items are clickable (ArticleListDatasetAdapter)
+ *   click will navigate to LendArticleOverview
  */
+
 class DatasetFragment : Fragment() {
 
     private lateinit var viewModel: DatasetViewModel
@@ -35,6 +35,7 @@ class DatasetFragment : Fragment() {
     private lateinit var dataBinding: FragmentDatasetBinding
 
     private lateinit var scanner: IntentIntegrator
+
 
     private val articleListAdapter =
         ArticleListDatasetAdapter(
@@ -114,10 +115,22 @@ class DatasetFragment : Fragment() {
     }
 
     private fun onQrScanClicked(){
-        scanner = IntentIntegrator.forSupportFragment(this)
-        scanner.initiateScan()
+        cameraAccessStarted=true
+        (activity as MainActivity).checkCameraPermission()
+
     }
 
+    fun onPermissionResult(permissionGranted:Boolean){
+        if (cameraAccessStarted&&permissionGranted) {
+            context?.let {
+                scanner = IntentIntegrator.forSupportFragment(this)
+                scanner.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+                scanner.initiateScan()
+            }
+        }
+    }
+
+    // intent to LendArticleOverview if QR-Scan successful
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
@@ -125,9 +138,7 @@ class DatasetFragment : Fragment() {
                 if (result.contents == null) {
                     Toast.makeText(getActivity()?.baseContext, "Cancelled", Toast.LENGTH_LONG).show()
                 } else {
-                    // ToDo check if articleId exists
                     val action = DatasetFragmentDirections.actionDatasetFragmentToLendArticleOverviewFragment(result.contents)
-                    //action.articleId = articleId
                     Navigation.findNavController(this.requireView()).navigate(action)
                 }
             } else {

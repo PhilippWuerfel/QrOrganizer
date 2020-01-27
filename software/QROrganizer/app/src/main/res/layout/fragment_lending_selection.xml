@@ -60,6 +60,7 @@
                             android:layout_marginStart="@dimen/margin_wide"
                             android:layout_marginEnd="@dimen/margin_wide"
                             android:clickable="true"
+                            android:focusable="true"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

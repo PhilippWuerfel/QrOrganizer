@@ -2,12 +2,41 @@
     <string name="app_name">QR Organizer</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="my_app_id">fabstitchapp-ekpvh</string>
     <string name="msg_error_list_download">An error occurred while loading data</string>
-    <!--    Formats for item_article-->
-    <string name="current_amount_format">Current stock amount: %d</string>
-    <string name="lending_amount_format">Current lending amount: %d</string>
+    <!--    Formats    -->
+    <string name="format_stock_amount">Current stock amount: %d</string>
+    <string name="format_lending_amount">Current lending amount: %d</string>
+    <string name="format_article_name">Article: %s</string>
+    <string name="format_article_id">Article: %s</string>
+    <string name="format_article_lending_id">Lending ID: %s</string>
+    <string name="format_article_price">Price: %.2f €</string>
+    <string name="format_article_where_ordered">Order destination: %s</string>
+    <string name="format_lending_who">Borrower: %s</string>
+    <string name="format_lending_comment">Comment: %s</string>
+    <string name="format_return_date">Return date: %s</string>
+    <!--    Text    -->
+    <string name="text_lending_amount">"Current lending amount: "</string>
     <string name="text_finish">Finish</string>
     <string name="text_no_data_available">Currently no data available</string>
+    <string name="text_dialog_fillup_stock">Please insert the amount of refilled items</string>
+    <string name="text_question_return_article">Do you want to return the selected article back to stock?</string>
+    <string name="text_question_remove_article_wear_part">Do you want to remove the selected wear part?</string>
+    <string name="text_button_confirm">Confirm</string>
+    <string name="text_amount">Amount</string>
+    <string name="text_qr_code_imageview">QR code of selected article</string>
+    <string name="text_name_who">Name (who)</string>
+    <string name="text_comments">Comments</string>
+    <string name="text_wear_part">Wear Part</string>
+    <string name="text_name">Name</string>
+    <string name="text_price">Price</string>
+    <string name="text_room">Room</string>
+    <string name="text_shelf">Shelf</string>
+    <string name="text_box">Box</string>
+    <string name="text_shop">Shop</string>
+    <string name="text_current_amount">Current Amount</string>
+    <string name="text_minimum_amount">Minimum Amount</string>
+    <string name="text_is_wear_part">"Wear part: "</string>
+    <string name="text_qr_icon_background_imageview">Image icon, scan for fun</string>
+    <string name="text_splash_screen">QR Organizer - Organize your storage</string>
+
 </resources>

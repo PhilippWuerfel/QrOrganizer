@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -16,56 +17,107 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:orientation="horizontal"
-        android:onClick="@{listener::onLendArticleClicked}">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:onClick="@{listener::onLendArticleClicked}"
+        android:padding="@dimen/padding_wide">
+
+        <TextView
+            android:id="@+id/text_lend_lending_who"
+            style="@style/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/format_lending_who(lendArticle.article_lending.lending_who)}"
+            tools:text="lending_who"/>
 
         <TextView
             android:id="@+id/text_lend_article_name"
-            style="@style/Title"
+            style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{lendArticle.article_name}"/>
+            android:text="@{@string/format_article_name(lendArticle.article_name)}"
+            tools:text="articleName"/>
 
         <TextView
-            android:id="@+id/text_lend_article_id"
-            style="@style/Title"
+            android:id="@+id/text_lending_comment"
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/format_lending_comment(lendArticle.article_lending.lending_comment)}"
+            tools:text="lending_comment"/>
+
+        <TextView
+            android:id="@+id/text_article_id"
+            style="@style/Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:text="@{lendArticle.article_id}"/>
+            android:text="@{lendArticle.article_id}"
+            tools:text="article_id"/>
+
+        <TextView
+            android:id="@+id/text_article_lending_id"
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@{lendArticle.article_lending.lending_id}"
+            tools:text="lending_id"/>
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:padding="4dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_lend_lending_amount_description"
+                style="@style/Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_lending_amount"
+                tools:text="@string/text_lending_amount"/>
 
             <TextView
                 android:id="@+id/text_lend_lending_amount"
                 style="@style/Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{String.valueOf(lendArticle.article_lending.lending_amount)}" />
-
-            <TextView
-                android:id="@+id/text_lend_lending_who"
-                style="@style/Text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{lendArticle.article_lending.lending_who}" />
-
-            <TextView
-                android:id="@+id/text_lend_lending_return_date"
-                style="@style/Text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{String.valueOf(lendArticle.article_lending.lending_return_date.date)}" />
+                android:text="@{String.valueOf(lendArticle.article_lending.lending_amount)}"
+                tools:text="lending_amount"/>
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_is_wear_part_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_is_wear_part"
+                tools:text="@string/text_is_wear_part"/>
+
+            <TextView
+                android:id="@+id/text_is_wear_part_bool"
+                style="@style/Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{String.valueOf(lendArticle.article_lending.lending_is_wear_part)}"
+                tools:text="true"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/text_lend_lending_return_date"
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLength="23"
+            android:text="@{@string/format_return_date(lendArticle.article_lending.lending_return_date.toLocaleString())}"
+            tools:text="lending_return_date" />
 
     </LinearLayout>
 

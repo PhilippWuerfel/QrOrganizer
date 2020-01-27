@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="fillUpStockDialogFragmentViewModel"
+            type="de.wuebeli.qrorganizer.screens.lendarticleoverview.viewmodel.FillUpStockDialogFragmentViewModel"/>
+    </data>
+
+<LinearLayout
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/padding_wide"
+    android:paddingEnd="@dimen/padding_wide"
+    tools:context=".screens.lendarticleoverview.view.FillUpStockDialogFragment"
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/textView_Task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_dialog_fillup_stock"
+        style="@style/Title"
+        />
+
+    <EditText
+        android:id="@+id/dialogEditText_fillUpStockAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/text_amount"
+        android:inputType="numberSigned|number"
+        android:text="@={fillUpStockDialogFragmentViewModel.fillUpStockAmount}"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_fillUpConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:maxImageSize="@dimen/icon_image_size"
+            app:srcCompat="@drawable/ic_send"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
+
+</layout>
+

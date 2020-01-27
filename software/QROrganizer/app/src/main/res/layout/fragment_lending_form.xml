@@ -38,18 +38,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Name (who)"
+                android:hint="@string/text_name_who"
                 android:inputType="textPersonName"
-                android:text="@={lendingFormViewModel.lending_who}"/>
+                android:text="@={lendingFormViewModel.lendingWho}"
+                />
 
             <EditText
                 android:id="@+id/editText_LendingAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Amount"
+                android:hint="@string/text_amount"
                 android:inputType="number"
-                android:text="@={lendingFormViewModel.lending_amount}"
+                android:text="@={lendingFormViewModel.lendingAmount}"
                 />
 
             <EditText
@@ -57,9 +58,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Comments"
+                android:hint="@string/text_comments"
                 android:inputType="textPersonName"
-                android:text="@={lendingFormViewModel.lending_comment}"
+                android:text="@={lendingFormViewModel.lendingComment}"
                 />
 
         </LinearLayout>
@@ -69,41 +70,41 @@
             android:id="@+id/checkBox_IsWearPart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_wide"
             android:layout_marginEnd="@dimen/margin_wide"
-            android:layout_marginBottom="@dimen/margin_wide"
             android:checked="false"
-            android:text="Wear Part"
-            app:layout_constraintBottom_toTopOf="@+id/button_LendingFinish"
+            android:text="@string/text_wear_part"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_LendingFinish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/margin_wide"
+            android:layout_marginBottom="8dp"
             android:gravity="clip_horizontal"
-            android:text="@string/text_finish"
-            android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            />
+            android:clickable="true"
+            android:focusable="true"
+            app:maxImageSize="@dimen/icon_image_size"
+            app:srcCompat="@drawable/ic_send"/>
 
-        <EditText
-            android:id="@+id/editText_ReturnDate"
+        <DatePicker
+            android:id="@+id/datePicker_Lending"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_wide"
-            android:ems="10"
-            android:hint="Return Date"
-            android:inputType="date"
-            app:layout_constraintBottom_toTopOf="@+id/checkBox_IsWearPart"
+            android:layout_marginTop="@dimen/margin_wide"
+            android:layout_marginBottom="32dp"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner"
+            app:layout_constraintBottom_toTopOf="@+id/button_LendingFinish"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="@={lendingFormViewModel.lending_return_date}"/>
+            app:layout_constraintTop_toBottomOf="@+id/checkBox_IsWearPart" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

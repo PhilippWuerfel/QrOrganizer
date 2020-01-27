@@ -3,13 +3,18 @@ package de.wuebeli.qrorganizer.screens.lendarticleoverview.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.ItemLendArticleBinding
 import de.wuebeli.qrorganizer.model.LendArticle
 import kotlinx.android.synthetic.main.item_lend_article.view.*
+
+/**
+ *   Adapter to have LendArticleList scrollable, items clickable
+ *   and efficient in LendArticleOverviewFragment
+ */
 
 class LendArticleListAdapter(val lendArticeList: ArrayList<LendArticle>) :
     RecyclerView.Adapter<LendArticleListAdapter.LendArticleViewHolder>(),
@@ -17,7 +22,7 @@ class LendArticleListAdapter(val lendArticeList: ArrayList<LendArticle>) :
 
      fun updateLendArticleList(newLendArticleList: List<LendArticle>){
          lendArticeList.clear()
-         lendArticeList.addAll(newLendArticleList)
+         lendArticeList.addAll(newLendArticleList.sortedBy { it.article_lending.lending_return_date })
          notifyDataSetChanged()
      }
 
@@ -42,13 +47,19 @@ class LendArticleListAdapter(val lendArticeList: ArrayList<LendArticle>) :
     override fun getItemCount(): Int = lendArticeList.size
 
     override fun onLendArticleClicked(view: View) {
+        // Open DialogFragment to return selected/clicked article
+        val articleId = view.text_article_id.text.toString()
+        val articleLendingId = view.text_article_lending_id.text.toString()
+        val articleLendingAmount = view.text_lend_lending_amount.text.toString().toInt()
+        val articleLendingIsWearPart = view.text_is_wear_part_bool.text.toString().toBoolean()
 
-        // ToDo clickListener
-        //  implement option to Return Article here
-
-        val lendArticleId = view.text_lend_article_id.text.toString()
-        Toast.makeText(view.context, lendArticleId, Toast.LENGTH_SHORT)
-            .show()
+        val action = LendArticleOverviewFragmentDirections
+            .actionLendArticleOverviewFragmentToReturnArticleDialogFragment(
+                articleId,
+                articleLendingId,
+                articleLendingAmount,
+                articleLendingIsWearPart)
+        Navigation.findNavController(view).navigate(action)
     }
 
     // using databinding

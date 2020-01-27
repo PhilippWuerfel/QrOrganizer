@@ -13,8 +13,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="451" />
-                            <option name="y" value="438" />
+                            <option name="x" value="447" />
+                            <option name="y" value="736" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -34,18 +34,49 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="fillUpDialogFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1049" />
+                            <option name="y" value="381" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_fillUpDialogFragment_to_datasetFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="lendArticleOverviewFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="784" />
-                            <option name="y" value="441" />
+                            <option name="x" value="781" />
+                            <option name="y" value="759" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_lendArticleOverviewFragment_to_datasetFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_lendArticleOverviewFragment_to_fillUpDialogFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_lendArticleOverviewFragment_to_returnArticleDialogFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -109,6 +140,27 @@
                         <option name="myPositions">
                           <map>
                             <entry key="action_qrCreateFragment_to_startFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="returnArticleDialogFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1035" />
+                            <option name="y" value="1091" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_returnArticleDialogFragment_to_datasetFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

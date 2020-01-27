@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<data>
+    <variable
+        name="returnArticleDialogFragmentViewModel"
+        type="de.wuebeli.qrorganizer.screens.lendarticleoverview.viewmodel.ReturnArticleDialogFragmentViewModel"/>
+</data>
+
+<LinearLayout
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/padding_wide"
+    android:paddingEnd="@dimen/padding_wide"
+    tools:context=".screens.lendarticleoverview.view.ReturnArticleDialogFragment"
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/textView_Question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_question_return_article"
+        style="@style/Title"
+        />
+
+    <TextView
+        android:id="@+id/textView_articleId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Text"
+        tools:text="articleId"
+        android:text="@{@string/format_article_id(returnArticleDialogFragmentViewModel.articleId)}"/>
+    <TextView
+        android:id="@+id/textView_articleLendingId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Text"
+        tools:text="articleLendingId"
+        android:text="@{@string/format_article_lending_id(returnArticleDialogFragmentViewModel.articleLendingId)}"/>
+    <TextView
+        android:id="@+id/textView_articleLendingAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Text"
+        tools:text="articleLendingAmount"
+        android:text="@{@string/format_lending_amount(returnArticleDialogFragmentViewModel.articleLendingAmount)}"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_returnArticleConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:clickable="true"
+            android:focusable="true"
+            app:maxImageSize="@dimen/icon_image_size"
+            app:srcCompat="@drawable/ic_send"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
+
+</layout>

@@ -3,7 +3,8 @@ package de.wuebeli.qrorganizer.model
 import java.util.*
 
 data class ArticleMaster (
-    val articleId : String, // will be created by QR Code generation with articleQrCode data
+    // represents the article document in MongoDB
+    val articleId : String, // will be created automatically on QR Code generation: articleName + uuid
     val articleName: String,
     val lastUserId: String,
     val lastChangeTime: Date,

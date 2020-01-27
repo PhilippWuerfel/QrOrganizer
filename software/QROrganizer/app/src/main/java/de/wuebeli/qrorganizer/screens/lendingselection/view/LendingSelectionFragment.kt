@@ -14,13 +14,20 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
 import com.google.zxing.integration.android.IntentIntegrator
 
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.FragmentLendingSelectionBinding
+import de.wuebeli.qrorganizer.screens.MainActivity
 import de.wuebeli.qrorganizer.screens.lending.viewmodel.LendingSelectionViewModel
-import kotlinx.android.synthetic.main.fragment_qr_scan.*
+import de.wuebeli.qrorganizer.util.cameraAccessStarted
+
+/**
+ *   Shows list of existing articles including details like amount and order destination
+ *   Items are clickable (ArticleListLendingAdapter)
+ *   click will navigate to LendingForm
+ */
+
 
 class LendingSelectionFragment : Fragment() {
 
@@ -54,8 +61,6 @@ class LendingSelectionFragment : Fragment() {
             selectionViewModel.refresh()
         }
 
-        dataBinding.floatingActionButtonQrScan.setOnClickListener { onQrScanClicked() }
-
         // Inflate the layout for this fragment
         return dataBinding.root
     }
@@ -73,6 +78,8 @@ class LendingSelectionFragment : Fragment() {
             selectionViewModel.refresh()
             dataBinding.refreshLayoutDataset.isRefreshing = false
         }
+
+        dataBinding.floatingActionButtonQrScan.setOnClickListener { onQrScanClicked() }
 
         observeViewModel()
     }
@@ -108,8 +115,18 @@ class LendingSelectionFragment : Fragment() {
     }
 
     private fun onQrScanClicked(){
-        scanner = IntentIntegrator.forSupportFragment(this)
-        scanner.initiateScan()
+        cameraAccessStarted=true
+        (activity as MainActivity).checkCameraPermission()
+    }
+
+    fun onPermissionResult(permissionGranted:Boolean){
+        if (cameraAccessStarted &&permissionGranted) {
+            context?.let {
+                scanner = IntentIntegrator.forSupportFragment(this)
+                scanner.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+                scanner.initiateScan()
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -119,7 +136,6 @@ class LendingSelectionFragment : Fragment() {
                 if (result.contents == null) {
                     Toast.makeText(getActivity()?.baseContext, "Cancelled", Toast.LENGTH_LONG).show()
                 } else {
-                    // ToDo check if articleId exists
                     val action = LendingSelectionFragmentDirections.actionLendingSelectionFragmentToLendingFormFragment(result.contents)
                     Navigation.findNavController(this.requireView()).navigate(action)
                 }

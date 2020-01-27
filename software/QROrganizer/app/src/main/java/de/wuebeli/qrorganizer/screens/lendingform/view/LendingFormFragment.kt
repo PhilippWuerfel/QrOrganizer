@@ -13,13 +13,21 @@ import androidx.lifecycle.ViewModelProviders
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.FragmentLendingFormBinding
 import de.wuebeli.qrorganizer.screens.lendingform.viewmodel.LendingFormViewModel
+import kotlinx.android.synthetic.main.fragment_lending_form.*
 
-/** ToDo
- *   Eingabedaten am Tablet
- *    a) Welchen Artikel  scannen oder manuelles suchen aus der Artikelliste
- *    b) Bis wann
- *    c) Wer
+
+/**
+ *   1. Shows a form to lend/borrow the selected article (add an entry on MongoDB in lending array)
+ *
+ *   2. Displays the ID of selected article
+ *
+ *   3. Fields to expect user input for lending:
+ *          Name of the borrower
+ *          Current lending amount (optional)
+ *          Wear part (true or false via check box)
+ *          Return Date (selected via datepicker) *
  */
+
 class LendingFormFragment : Fragment() {
 
     private lateinit var viewModel: LendingFormViewModel
@@ -29,6 +37,7 @@ class LendingFormFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         dataBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_lending_form,
@@ -44,6 +53,18 @@ class LendingFormFragment : Fragment() {
 
         dataBinding.buttonLendingFinish.setOnClickListener { onFinishClicked() }
 
+        // set minDate of datePicker to forbid return dates in past
+        dataBinding.datePickerLending.minDate= System.currentTimeMillis()-1000
+
+        // check if datePicker information is hold back in savedInstanceState to assure surving screen rotations
+        if (savedInstanceState != null){
+
+            // set minDate of datePicker to forbid return dates in past
+            dataBinding.datePickerLending.minDate= System.currentTimeMillis()-1000
+
+            dataBinding.datePickerLending.updateDate(savedInstanceState.getInt("year"), savedInstanceState.getInt("month"), savedInstanceState.getInt("day"))
+        }
+
         // Inflate the layout for this fragment
         return dataBinding.root
     }
@@ -55,6 +76,15 @@ class LendingFormFragment : Fragment() {
         }
 
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        // save values of datePicker_Lending
+        datePicker_Lending?.let {
+            outState.putInt("year", datePicker_Lending.year)
+            outState.putInt("month", datePicker_Lending.month)
+            outState.putInt("day", datePicker_Lending.dayOfMonth)
+        }
     }
 
     private fun onFinishClicked(){

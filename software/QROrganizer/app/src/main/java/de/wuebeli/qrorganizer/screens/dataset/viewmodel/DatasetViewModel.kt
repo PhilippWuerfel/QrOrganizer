@@ -24,12 +24,6 @@ class DatasetViewModel(application: Application) : BaseViewModel(application) {
     val eventLoadingFinish: LiveData<Boolean>
         get() = _eventLoadingFinish
 
-//    private val _articleItemClicked = MutableLiveData<Boolean>()
-//    val articleItemClicked: LiveData<Boolean>
-//        get() = _articleItemClicked
-
-//    val articelItemClicked = MutableLiveData<Boolean>()
-
     fun refresh() {
         fetchArticlesFromDatabase()
     }
@@ -42,11 +36,13 @@ class DatasetViewModel(application: Application) : BaseViewModel(application) {
             MongoDBStitchManager.downloadArticleList(object :
                 DownloadCallbackArticleList.DownloadCallbackInterface {
                 override fun onError() {
+                    // set status which will result in a displayed error message in view
                     _articleListLoadError.value = true
                     _eventLoadingFinish.value = true
                 }
 
                 override fun onFinish(articleList: List<ArticleMaster>) {
+                    // notify that download of new articleList successful
                     val articles = articleList
                     onArticlesRetrieved(articles)
                 }

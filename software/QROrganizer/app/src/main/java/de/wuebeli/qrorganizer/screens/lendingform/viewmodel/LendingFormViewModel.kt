@@ -1,6 +1,7 @@
 package de.wuebeli.qrorganizer.screens.lendingform.viewmodel
 
 import android.app.Application
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
@@ -12,19 +13,17 @@ import de.wuebeli.qrorganizer.util.MongoDBStitchManager
 import de.wuebeli.qrorganizer.util.UploadCallback
 import kotlinx.android.synthetic.main.fragment_lending_form.view.*
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 
 class LendingFormViewModel(application: Application) : BaseViewModel(application) {
 
     val articleId = MutableLiveData<String>()
+    val lendingWho = MutableLiveData<String>()
+    val lendingAmount = MutableLiveData<String>() // due to two way binding works better on string, will be converted before creation of ArticleLending-Object
+    val lendingComment = MutableLiveData<String>()
 
-    val lending_who = MutableLiveData<String>()
-    val lending_amount = MutableLiveData<String>() // due to two way binding works better on string, will be converted before creation of ArticleLending-Object
-    val lending_comment = MutableLiveData<String>()
-    val lending_return_date = MutableLiveData<String>() // due to two way binding works better on string, will be converted before creation of ArticleLending-Object
-//    var lending_is_wear_part = MutableLiveData<Int>()
-
-    fun onLendArticle(view : View){
+    fun onLendArticle(view: View) {
 
         /** ToDo
          *   1. Get ArticleID from Scanning QR Code or from Selection in List
@@ -33,45 +32,82 @@ class LendingFormViewModel(application: Application) : BaseViewModel(application
          *   4. Build a second method in MongoDBStitchManger: lendArticle( article, takeForEver)
          */
 
-        val returnDate = Date(2020, 2, 12) //ToDo check whats happening here
-        // ToDo get Date out of string return date from form
+        // assure lendingComment is not null as user does not need to input
+        if(lendingComment.value == null){ lendingComment.value = ""}
 
-        val myLending = ArticleLending(
-            System.currentTimeMillis().toString(),
-            lending_who.value!!.toString(),
-            lending_amount.value!!.toInt(),
-            returnDate,
-            view.checkBox_IsWearPart.isChecked
-        )
+        // set default value for returnDate (depreciated as new Date-Format not available in API21)
+        var returnDate = Date(1970,1,1)
 
-        if(myLending.lending_is_wear_part){
-            // launch coroutine from background thread to upload LendingForm to MongoDB
-            launch {
-                MongoDBStitchManager.takeArticleForever(articleId.value!!.toString(), myLending, object : UploadCallback.UploadCallbackInterface{
-                    override fun onError() {
-                        Toast.makeText(view.context,"Upload failed, check form and try again", Toast.LENGTH_SHORT).show()
-                    }
-                    override fun onFinish() {
-                        val action = LendingFormFragmentDirections.actionLendingFormFragmentToStartFragment()
-                        Navigation.findNavController(view).navigate(action)
-                    }
-                })
+        val datePickerDateString = view.datePicker_Lending.year.toString()+"-"+(view.datePicker_Lending.month+1).toString()+"-"+view.datePicker_Lending.dayOfMonth.toString()
+        // lendingReturnDate.value = datePickerDateString
+        // try to parse lendingReturnDate
+        try{
+            val parsedDate = SimpleDateFormat("yyyy-MM-dd", Locale.GERMAN).parse(datePickerDateString)
+            if(parsedDate != null) {
+                returnDate = parsedDate
             }
-        }else{
-            // launch coroutine from background thread to upload LendingForm to MongoDB
-            launch {
-                MongoDBStitchManager.lendArticle(articleId.value!!.toString(), myLending, object : UploadCallback.UploadCallbackInterface{
-                    override fun onError() {
-                        Toast.makeText(view.context,"Upload failed, check form and try again", Toast.LENGTH_SHORT).show()
-                    }
-                    override fun onFinish() {
-                        val action = LendingFormFragmentDirections.actionLendingFormFragmentToStartFragment()
-                        Navigation.findNavController(view).navigate(action)
-                    }
-                })
-            }
-
+        }catch (e : java.lang.Exception){
+            Log.e("LendingFormViewModel", "Error parsing returnDate: " + e.message)
         }
 
+        // determine whether checkBox for isWearPart is true or false
+        val isWearPart = view.checkBox_IsWearPart.isChecked
+
+        // build lendingObject
+        val myLending = ArticleLending(
+            UUID.randomUUID().toString(),
+            lendingWho.value!!.toString(),
+            lendingAmount.value!!.toInt(),
+            lendingComment.value!!.toString(),
+            returnDate,
+            isWearPart
+        )
+
+        if (isWearPart) {
+            // launch coroutine from background thread to upload LendingForm to MongoDB
+            launch {
+                MongoDBStitchManager.takeArticleForever(
+                    articleId.value!!.toString(),
+                    myLending,
+                    object : UploadCallback.UploadCallbackInterface {
+                        override fun onError() {
+                            Toast.makeText(
+                                view.context,
+                                "Upload failed, check form and try again",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        override fun onFinish() {
+                            val action =
+                                LendingFormFragmentDirections.actionLendingFormFragmentToStartFragment()
+                            Navigation.findNavController(view).navigate(action)
+                        }
+                    })
+            }
+        } else {
+            // article is not marked as wear part and needs to be returned
+                // launch coroutine from background thread to upload LendingForm to MongoDB
+                launch {
+                    MongoDBStitchManager.lendArticle(
+                        articleId.value!!.toString(),
+                        myLending,
+                        object : UploadCallback.UploadCallbackInterface {
+                            override fun onError() {
+                                Toast.makeText(
+                                    view.context,
+                                    "Upload failed, check form and try again",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                            override fun onFinish() {
+                                val action =
+                                    LendingFormFragmentDirections.actionLendingFormFragmentToStartFragment()
+                                Navigation.findNavController(view).navigate(action)
+                            }
+                        })
+                }
+        }
     }
 }

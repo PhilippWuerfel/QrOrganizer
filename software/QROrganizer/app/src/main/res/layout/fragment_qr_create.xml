@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Name"
+                android:hint="@string/text_name"
                 android:inputType="textPersonName"
                 android:text="@={qrCreateViewModel.articleName}" />
 
@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Price"
+                android:hint="@string/text_price"
                 android:inputType="numberDecimal"
                 android:text="@={qrCreateViewModel.articlePrice}" />
 
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Room"
+                android:hint="@string/text_room"
                 android:inputType="textPersonName"
                 android:text="@={qrCreateViewModel.articleRoom}" />
 
@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Shelf"
+                android:hint="@string/text_shelf"
                 android:inputType="textPersonName"
                 android:text="@={qrCreateViewModel.articleShelf}" />
 
@@ -70,7 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Box"
+                android:hint="@string/text_box"
                 android:inputType="textPersonName"
                 android:text="@={qrCreateViewModel.articleBox}" />
 
@@ -78,7 +78,7 @@
                 android:id="@+id/editText_Shop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Shop"
+                android:hint="@string/text_shop"
                 android:inputType="textPersonName"
                 android:text="@={qrCreateViewModel.shop}" />
 
@@ -86,7 +86,7 @@
                 android:id="@+id/editText_CurrentStockAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Current Amount"
+                android:hint="@string/text_current_amount"
                 android:inputType="number"
                 android:text="@={qrCreateViewModel.currentAmount}" />
 
@@ -94,12 +94,12 @@
                 android:id="@+id/editText_MinAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Minimum Amount"
+                android:hint="@string/text_minimum_amount"
                 android:inputType="number"
                 android:text="@={qrCreateViewModel.minAmount}" />
         </LinearLayout>
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_create"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,12 +107,15 @@
             android:layout_marginTop="@dimen/margin_wide"
             android:layout_marginBottom="@dimen/margin_wide"
             android:gravity="clip_horizontal"
-            android:text="Create Article"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="1.0"
+            android:clickable="true"
+            android:focusable="true"
+            app:maxImageSize="@dimen/icon_image_size"
+            app:srcCompat="@drawable/ic_send"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

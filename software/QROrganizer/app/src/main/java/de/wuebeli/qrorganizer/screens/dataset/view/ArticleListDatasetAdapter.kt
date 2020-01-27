@@ -3,7 +3,6 @@ package de.wuebeli.qrorganizer.screens.dataset.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -13,12 +12,15 @@ import de.wuebeli.qrorganizer.model.ArticleMaster
 import de.wuebeli.qrorganizer.util.ArticleClickListener
 import kotlinx.android.synthetic.main.item_article.view.*
 
+/**
+ *   Adapter to have ArticleList scrollable, items clickable and efficient in DataSetFragment
+ */
 class ArticleListDatasetAdapter(val articleList : ArrayList<ArticleMaster>) : RecyclerView.Adapter<ArticleListDatasetAdapter.ArticleViewHolder>(),
     ArticleClickListener {
 
     fun updateArticleList(newArticleList: List<ArticleMaster>){
         articleList.clear()
-        articleList.addAll(newArticleList)
+        articleList.addAll(newArticleList.sortedBy { it.articleName })
         notifyDataSetChanged()
     }
 
@@ -44,13 +46,8 @@ class ArticleListDatasetAdapter(val articleList : ArrayList<ArticleMaster>) : Re
 
     override fun onArticleClicked(view: View) {
 
-        // ToDo clickListener seems not to work yet
-        //  also implement navigation to upcoming Fragment here by passing the selected Article
-        //  maybe via ViewModelFactory
-
         val articleId = view.text_article_id.text.toString()
         val action = DatasetFragmentDirections.actionDatasetFragmentToLendArticleOverviewFragment(articleId)
-        //action.articleId = articleId
         Navigation.findNavController(view).navigate(action)
     }
 

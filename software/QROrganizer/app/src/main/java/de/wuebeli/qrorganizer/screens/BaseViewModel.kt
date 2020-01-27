@@ -7,17 +7,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
+/**
+ *  Abstrac class to be able to use ViewModel and Coroutine
+ *      AndroidViewModel because application context is required
+ *      (ViewModel would only serve activity context, which is volatile)
+ */
+
 abstract class BaseViewModel(application: Application) : AndroidViewModel(application), CoroutineScope{
-    // AndroidViewModel because application context is required
-    // ViewModel would only serve activity context, which is volatile
+
 
     private val job = Job()
 
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
-//    override fun onCleared(){
-//        super.onCleared()
-//        job.cancel()
-//    }
+    override fun onCleared(){
+        super.onCleared()
+        job.cancel()
+    }
 }

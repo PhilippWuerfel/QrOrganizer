@@ -1,7 +1,6 @@
 package de.wuebeli.qrorganizer.screens.qrcreate
 
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,11 +13,21 @@ import androidx.lifecycle.ViewModelProviders
 import de.wuebeli.qrorganizer.R
 import de.wuebeli.qrorganizer.databinding.FragmentQrCreateBinding
 import de.wuebeli.qrorganizer.screens.MainActivity
-import de.wuebeli.qrorganizer.util.textToImageEncode
 
 /**
- * A simple [Fragment] subclass.
+ *   1. Shows a form to create a new article (add new document on MongoDB)
+ *
+ *   2. Fields to expect user input for lending:
+ *          ArticleName
+ *          Price
+ *          Room
+ *          Shelf
+ *          Box
+ *          Shop
+ *          Current amount
+ *          Minimum amount
  */
+
 class QrCreateFragment : Fragment() {
 
     private lateinit var viewModel: QrCreateViewModel
@@ -45,12 +54,9 @@ class QrCreateFragment : Fragment() {
 
         dataBinding.executePendingBindings()
 
-        dataBinding.buttonCreate.setOnClickListener(){onCreateArticleQR()}
-
-
+        dataBinding.buttonCreate.setOnClickListener{onCreateArticleQR()}
 
         // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_qr_create, container, false)
         return dataBinding.root
     }
 
@@ -69,29 +75,16 @@ class QrCreateFragment : Fragment() {
             Toast.makeText(getActivity()?.baseContext, "Please fill out all fields", Toast.LENGTH_SHORT).show()
 
         } else {
-            viewModel.onCreateArticleQR(requireContext(), requireView())
+            storageAccessStarted=true
+            (activity as MainActivity).checkStoragePermission()
         }
     }
 
-    fun onGrantPermission(){
-        storageAccessStarted=true
-        (activity as MainActivity).checkStoragePermission()
-    }
-
-
     fun onPermissionResult(permissionGranted:Boolean){
-
+        if(storageAccessStarted&&permissionGranted) {
+            context?.let {
+                viewModel.onCreateArticleQR(it, requireView())
+            }
+        }
     }
-
-    fun onShare(){
-        val intent= Intent(Intent.ACTION_SEND)
-        intent.type="text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT,"Blablabla")
-        startActivity(intent)
-    }
-
-
-
-
-
 }

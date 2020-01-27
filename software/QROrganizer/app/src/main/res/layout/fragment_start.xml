@@ -6,10 +6,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/padding_wide"
-        android:paddingBottom="@dimen/padding_wide"
+        android:background="@color/background"
         android:paddingLeft="@dimen/padding_wide"
+        android:paddingTop="@dimen/padding_wide"
         android:paddingRight="@dimen/padding_wide"
+        android:paddingBottom="@dimen/padding_wide"
         tools:context=".screens.start.StartFragment">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -17,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:focusable="true"
             android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,8 +30,8 @@
             android:id="@+id/button_start_borrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:clickable="true"
+            android:focusable="true"
             android:src="@drawable/ic_take"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:focusable="true"
             android:src="@drawable/ic_list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,11 +60,12 @@
             android:layout_marginTop="@dimen/margin_wide"
             android:layout_marginEnd="@dimen/margin_wide"
             android:layout_marginBottom="@dimen/margin_wide"
+            android:src="@drawable/qr_organizer_icon_fragment_background"
             app:layout_constraintBottom_toTopOf="@+id/button_start_borrow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/sym_def_app_icon" />
+            android:contentDescription="@string/text_qr_icon_background_imageview"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
