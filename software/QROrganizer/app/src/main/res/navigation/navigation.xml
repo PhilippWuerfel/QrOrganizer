@@ -35,7 +35,8 @@
     <fragment
         android:id="@+id/qrCreateFragment"
         android:name="de.wuebeli.qrorganizer.screens.qrcreate.QrCreateFragment"
-        android:label="QrCreateFragment" >
+        android:label="QrCreateFragment"
+        tools:layout="@layout/fragment_qr_create">
         <action
             android:id="@+id/action_qrCreateFragment_to_startFragment"
             app:destination="@id/startFragment" />
@@ -43,7 +44,8 @@
     <fragment
         android:id="@+id/lendArticleOverviewFragment"
         android:name="de.wuebeli.qrorganizer.screens.lendarticleoverview.view.LendArticleOverviewFragment"
-        android:label="LendArticleOverviewFragment" >
+        android:label="LendArticleOverviewFragment"
+        tools:layout="@layout/fragment_lend_article_overview">
         <argument
             android:name="articleId"
             app:argType="string" />
@@ -60,7 +62,8 @@
     <fragment
         android:id="@+id/lendingSelectionFragment"
         android:name="de.wuebeli.qrorganizer.screens.lending.view.LendingSelectionFragment"
-        android:label="LendingSelectionFragment" >
+        android:label="LendingSelectionFragment"
+        tools:layout="@layout/fragment_lending_selection">
         <action
             android:id="@+id/action_lendingSelectionFragment_to_lendingFormFragment"
             app:destination="@id/lendingFormFragment" />
@@ -68,7 +71,8 @@
     <fragment
         android:id="@+id/lendingFormFragment"
         android:name="de.wuebeli.qrorganizer.screens.lendingform.view.LendingFormFragment"
-        android:label="LendingFormFragment" >
+        android:label="LendingFormFragment"
+        tools:layout="@layout/fragment_lending_form">
         <argument
             android:name="articleId"
             app:argType="string" />
@@ -82,7 +86,8 @@
     <dialog
         android:id="@+id/fillUpDialogFragment"
         android:name="de.wuebeli.qrorganizer.screens.lendarticleoverview.view.FillUpDialogFragment"
-        android:label="FillUpDialogFragment" >
+        android:label="FillUpDialogFragment"
+        tools:layout="@layout/fragment_fill_up_stock_dialog">
         <argument
             android:name="articleId"
             app:argType="string" />
@@ -94,7 +99,8 @@
     <dialog
         android:id="@+id/returnArticleDialogFragment"
         android:name="de.wuebeli.qrorganizer.screens.lendarticleoverview.view.ReturnArticleDialogFragment"
-        android:label="ReturnArticleDialogFragment" >
+        android:label="ReturnArticleDialogFragment"
+        tools:layout="@layout/fragment_return_article_dialog">
         <argument
             android:name="articleId"
             app:argType="string" />
