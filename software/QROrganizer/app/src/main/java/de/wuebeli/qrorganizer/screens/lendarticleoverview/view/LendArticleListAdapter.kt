@@ -3,6 +3,8 @@ package de.wuebeli.qrorganizer.screens.lendarticleoverview.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -18,12 +20,25 @@ import kotlinx.android.synthetic.main.item_lend_article.view.*
 
 class LendArticleListAdapter(val lendArticeList: ArrayList<LendArticle>) :
     RecyclerView.Adapter<LendArticleListAdapter.LendArticleViewHolder>(),
-    LendArticleClickListener {
+    LendArticleClickListener, Filterable {
 
-     fun updateLendArticleList(newLendArticleList: List<LendArticle>){
+    private val lendArticleListFull = lendArticeList
+
+    override fun getFilter(): Filter {
+        return NewFilter()
+    }
+
+    fun updateLendArticleList(newLendArticleList: List<LendArticle>){
          lendArticeList.clear()
          lendArticeList.addAll(newLendArticleList.sortedBy { it.article_lending.lending_return_date })
-         notifyDataSetChanged()
+
+        // also update lendArticleListFull
+        lendArticleListFull.clear()
+        lendArticleListFull.addAll(lendArticeList)
+
+        notifyDataSetChanged()
+
+
      }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LendArticleViewHolder {
@@ -60,6 +75,38 @@ class LendArticleListAdapter(val lendArticeList: ArrayList<LendArticle>) :
                 articleLendingAmount,
                 articleLendingIsWearPart)
         Navigation.findNavController(view).navigate(action)
+    }
+
+    // Inner class for filter
+    inner class NewFilter : Filter(){
+        override fun performFiltering(charSequence: CharSequence?): FilterResults {
+            var filteredList : ArrayList<LendArticle> = lendArticeList
+            filteredList.clear()
+
+            if(charSequence.isNullOrEmpty()){
+                filteredList.addAll(lendArticleListFull)
+            }else{
+//                val filterPattern = charSequence.toString().toLowerCase().trim()
+                val filterPattern = charSequence.toString().toLowerCase().trim { it <= ' ' }
+                for( lendArticle : LendArticle in lendArticleListFull){
+                    if(lendArticle.article_name.toLowerCase().contains(filterPattern)){
+                        filteredList.add(lendArticle)
+                    }
+                }
+            }
+            val results = FilterResults()
+            results.values = filteredList
+            results.count = filteredList.size
+
+            lendArticeList.clear()
+            lendArticeList.addAll(filteredList)
+
+            return  results
+        }
+
+        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+            notifyDataSetChanged()
+        }
     }
 
     // using databinding

@@ -58,9 +58,6 @@ class QrCreateViewModel(application: Application) : BaseViewModel(application) {
                 e.printStackTrace()
             }
 
-            // ToDo implement some testing before (currently done in Fragment)
-            //  for id: delete empty spaces
-
             val newArticle = ArticleMaster(
                 articleId.value!!.toString(),
                 articleName.value!!.toString(),

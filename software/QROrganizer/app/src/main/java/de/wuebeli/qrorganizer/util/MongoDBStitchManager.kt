@@ -21,7 +21,7 @@ import java.util.*
 
 object MongoDBStitchManager {
     init {
-        Stitch.initializeDefaultAppClient("qrstitchapp-khqnn") // hardcoded seems to be a secure way if used as Singleton
+        Stitch.initializeDefaultAppClient("qrstitchapp-nowgx") //"qrstitchapp-khqnn") // hardcoded seems to be a secure way if used as Singleton
     }
 
     private val stitchAppClient: StitchAppClient = Stitch.getDefaultAppClient()

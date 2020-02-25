@@ -104,6 +104,17 @@
                 app:maxImageSize="@dimen/icon_image_size"
                 app:srcCompat="@drawable/ic_fill_up_stock" />
 
+            <SearchView
+                android:id="@+id/searchView_articleList"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/lendArticleList"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/iv_qr"
+                app:layout_constraintTop_toBottomOf="@+id/floatingActionButton_fillUpStock"
+                app:layout_constraintVertical_bias="1.0" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
