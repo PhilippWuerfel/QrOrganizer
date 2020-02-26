@@ -23,7 +23,8 @@ class ArticleListLendingAdapter(val articleList : ArrayList<ArticleMaster>) : Re
 
     fun updateArticleList(newArticleList: List<ArticleMaster>){
         articleList.clear()
-        articleList.addAll(newArticleList.sortedBy { it.articleName })
+        // articleList.addAll(newArticleList.sortedBy { it.articleName })
+        articleList.addAll(newArticleList.sortedWith(compareBy({it.articleStorageLocation.articleStorageRoom}, {it.articleStorageLocation.articleStorageBox}, {it.articleStorageLocation.articleStorageShelf})) )
         notifyDataSetChanged()
     }
 
