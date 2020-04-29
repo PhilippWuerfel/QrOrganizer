@@ -13,20 +13,41 @@ xmlns:tools="http://schemas.android.com/tools">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/padding_wide"
-        android:paddingBottom="@dimen/padding_wide"
         android:paddingLeft="@dimen/padding_wide"
         android:paddingRight="@dimen/padding_wide">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/articleList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/floatingActionButton_qr_scan"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/articleList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                 />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton_qr_scan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginStart="@dimen/margin_wide"
+                android:layout_marginEnd="@dimen/margin_wide"
+                android:layout_marginBottom="@dimen/margin_wide"
+                android:clickable="true"
+                android:focusable="true"
+                app:maxImageSize="@dimen/icon_image_size"
+
+                app:srcCompat="@drawable/ic_photo_camera" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/listError"
@@ -46,21 +67,6 @@ xmlns:tools="http://schemas.android.com/tools">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton_qr_scan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/margin_wide"
-            android:layout_marginEnd="@dimen/margin_wide"
-            android:clickable="true"
-            android:focusable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:maxImageSize="@dimen/icon_image_size"
-            app:srcCompat="@drawable/ic_photo_camera" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

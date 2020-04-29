@@ -10,7 +10,7 @@
         android:paddingLeft="@dimen/padding_wide"
         android:paddingTop="@dimen/padding_wide"
         android:paddingRight="@dimen/padding_wide"
-        android:paddingBottom="@dimen/padding_wide"
+        android:paddingBottom="16dp"
         tools:context=".screens.start.StartFragment">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
